@@ -1,0 +1,98 @@
+﻿@page "/"
+
+<PageTitle>Call Tracker Index</PageTitle>
+
+<div class="row">
+    <div class="col-4">
+        <h2>APC Call Center</h2>
+    </div>
+</div>
+
+
+@* Dashboard Filters *@
+<div class="row dashboard-filters">
+    <div class="col">
+        <div id="dashboard-filters" class="card" style="margin-bottom: 20px;">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Dashboard Date Filters
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#dashboard-filters">
+                <div class="card-body">
+                    <span class="start-date" style="margin-right: 10px;">
+                        <label for="start-date">Start Date</label>
+                        <input type="date" id="start-date" />
+                    </span>
+                    <span class="end-date" style="margin-right: 10px;">
+                        <label for="end-date">End Date</label>
+                        <input type="date" id="end-date" />
+                    </span>
+                    <button id="btn-apply-filter" class="btn btn-outline-primary">Apply</button>
+                    <button id="btn-apply-filter-today" class="btn btn-outline-success" style="margin-left: 10px;">Today</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Total Calls and Lines Cleared Charts *@
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">Total Calls</div>
+            <canvas id="chart-total-calls"></canvas>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">Lines Cleared</div>
+            <canvas id="chart-total-lines"></canvas>
+        </div>
+    </div>
+</div>
+
+@* Employee Performance Summary Report *@
+<div class="row performance-summary-card-report" style="display: none;">
+    <div class="col">
+        <div id="dashboard-filters" class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#performance-report-card-body" aria-expanded="true" aria-controls="collapseOne">
+                        Employee Performance Summary Report
+                    </button>
+                </h5>
+            </div>
+            <div id="performance-report-card-body" class="collapse hide" aria-labelledby="headingOne" data-parent="#dashboard-filters">
+                <div class="card-body">
+                    <iframe id="performance-report-frame" style="width: 100%; height: 350px; border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Employee Performance Summary Grid *@
+<div class="row performance-summary-card-grid" style="display: none;">
+    <div class="col">
+        <div id="dashboard-filters" class="card" style="margin-top: 20px;">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#performance-report-card-body" aria-expanded="true" aria-controls="collapseOne">
+                        Employee Performance Summary Report
+                    </button>
+                </h5>
+            </div>
+            <div id="performance-report-card-grid" class="collapse show" aria-labelledby="headingOne" data-parent="#dashboard-filters">
+                <div class="card-body">
+                    <div id="reportGrid" style="font-size: smaller;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@**@
+@code{
+}

@@ -1,0 +1,37 @@
+﻿@inherits LayoutComponentBase
+@inject IHttpContextAccessor contextAccessor
+<PageTitle>APC.CallTracker</PageTitle>
+
+<div class="page">
+	<div class="sidebar">
+		<NavMenu />
+	</div>
+
+	<main>
+		<div class="top-row px-4">
+			<div>
+				@userName
+			</div>
+@*			<div class="col-3">
+				HttpContext: @(contextAccessor.HttpContext?.User?.Identity?.Name ?? "No HttpContext name")
+			</div>
+			<div class="col-3">
+				WindowsIdentity: @(System.Security.Principal.WindowsIdentity.GetCurrent()?.Name ?? "No windows identity")
+			</div>
+			<div class="col-3">
+				ClaimsPrincipal: @(System.Security.Claims.ClaimsPrincipal.Current?.Identity?.Name ?? "No claims principal")
+			</div>*@
+		</div>
+		<article class="content px-4">
+			@Body
+		</article>
+	</main>
+</div>
+@code {
+	string userName = "temp";
+
+	protected override async Task OnInitializedAsync()
+	{
+		this.userName = contextAccessor.HttpContext?.User.Identity?.Name?.Split('\\')[1];
+	}
+}
