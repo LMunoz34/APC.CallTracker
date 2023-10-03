@@ -1,0 +1,170 @@
+﻿@page "/memo"
+@inject MemoService MemoService
+@using APC.CallTracker.Models
+@using APC.CallTracker.Services
+@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+
+@* @inject IHttpClientFactory _clientFactory *@
+<h3>Reason Code Templates</h3>
+
+@if (templates == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h3>Add New Memo</h3>
+
+    <EditForm Model="newMemo" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <div style="display: flex;">
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="CodeID">Code ID:</label>
+                <InputText id="CodeID" class="form-control" @bind-Value="newMemo.CodeID"></InputText>
+            </div>
+
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="Name">Name:</label>
+                <InputText id="Name" class="form-control" @bind-Value="newMemo.Name"></InputText>
+            </div>
+
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="Summary">Summary:</label>
+                <InputText id="Summary" class="form-control" @bind-Value="newMemo.Summary"></InputText>
+            </div>
+		</div>
+
+        <div style="display: flex;">
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="Description">Description:</label>
+                <InputText id="Description" class="form-control" @bind-Value="newMemo.Description"></InputText>
+            </div>
+
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="Caption">Caption:</label>
+                <InputText id="Caption" class="form-control" @bind-Value="newMemo.Caption"></InputText>
+            </div>
+
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="LinkTypeID">LinkTypeID:</label>
+                <InputText id="LinkTypeID" class="form-control" @bind-Value="newMemo.LinkTypeID"></InputText>
+            </div>
+        </div>
+
+        <div style="display: flex;">
+			<div class="form-group" style="flex: 1;margin:10px;">
+                <label for="Needs2067">Needs2067:</label>
+                <InputCheckbox id="Needs2067" @bind-Value="newMemo.Needs2067"></InputCheckbox>
+            </div>
+
+            <div class="form-group" style="flex: 1;margin:10px;">
+                <label for="ForBillingTeam">ForBillingTeam:</label>
+                <InputCheckbox id="ForBillingTeam" @bind-Value="newMemo.ForBillingTeam"></InputCheckbox>
+            </div>
+
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="EffectiveDate">EffectiveDate:</label>
+                <InputDate id="EffectiveDate" class="form-control" @bind-Value="newMemo.EffectiveDate"></InputDate>
+            </div>
+
+            <div class="form-group mx-1" style="flex: 1;">
+                <label for="ExpirationDate">ExpirationDate:</label>
+                <InputDate id="ExpirationDate" class="form-control" @bind-Value="newMemo.ExpirationDate"></InputDate>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Template">Template:</label>
+            <InputTextArea id="Template" class="form-control" @bind-Value="newMemo.Template" rows="10"></InputTextArea>
+        </div>
+
+        <button type="submit" class="btn btn-primary m-5">Create/Update Memo</button>
+    </EditForm>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CodeID</th>
+                <th>Name</th>
+                <th>Summary</th>
+                <!-- Other columns... -->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var template in templates)
+            {
+                <tr>
+                    <td>@template.CodeID</td>
+                    <td>@template.Name</td>
+                    <td>@template.Summary</td>
+                    <!-- Other columns... -->
+                    <td>
+                        <button @onclick="() => EditTemplate(template)">Edit</button>
+                        <button @onclick="() => DeleteTemplate(template.CodeID)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<NewReasonCodeTemplate>? templates;
+
+    private NewReasonCodeTemplate newMemo = new NewReasonCodeTemplate();
+
+    private string? Record;
+
+    private async Task HandleValidSubmit()
+    {
+        if (string.IsNullOrWhiteSpace(Record))
+        {
+            await MemoService.AddTemplateAsync(newMemo);
+        }
+        else
+        {
+            await MemoService.UpdateTemplateAsync(newMemo);
+        }
+
+        // Re-fetch the templates and update the UI.
+        templates = await MemoService.GetAllTemplatesAsync();
+        StateHasChanged();
+
+        // Reset the form.
+        newMemo = new NewReasonCodeTemplate();
+        Record = null;
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (newMemo.EffectiveDate == DateTime.MinValue)
+        {
+            newMemo.EffectiveDate = DateTime.Today;
+        }
+
+        if (newMemo.ExpirationDate == DateTime.MinValue)
+        {
+            newMemo.ExpirationDate = DateTime.Today.AddYears(2);
+        }
+        templates = await MemoService.GetAllTemplatesAsync();
+    }
+
+    private void EditTemplate(NewReasonCodeTemplate template)
+    {
+        Record = template.CodeID;
+        newMemo = template;
+        // Implement edit logic...
+    }
+
+    private async Task DeleteTemplate(string codeId)
+    {
+        // Implement delete logic...
+        await MemoService.DeleteTemplateAsync(codeId);
+        templates = await MemoService.GetAllTemplatesAsync();
+        StateHasChanged();
+    }
+}
