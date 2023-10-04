@@ -11,13 +11,18 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="APC.CallTracker.styles.css" rel="stylesheet" />
-    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    <link href="_content/DevExpress.Blazor.Themes/bootstrap-external.bs5.min.css" rel="stylesheet" />
+    @* <link href="_content/DevExpress.Blazor/dx-blazor.css" rel="stylesheet" /> *@
+
+	<component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
     <script>
         var devMode = @System.Diagnostics.Debugger.IsAttached.ToString().ToLower();
     </script>
 
-    <script src="https://kendo.cdn.telerik.com/2017.3.1026/js/jquery.min.js"></script>
+    <script src="_content/DevExpress.Blazor/dx-blazor.js"></script>
 
+@* 
+    <script src="https://kendo.cdn.telerik.com/2017.3.1026/js/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -32,10 +37,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lscache/1.1.0/lscache.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script> 
     <script src="~/js/linq.min.js"></script>
-    <script src="~/js/site.js?v=1.0" asp-append-version="true"></script>
+    <script src="~/js/site.js?v=1.0" asp-append-version="true"></script> *@
 </head>
 <body>
     @RenderBody()

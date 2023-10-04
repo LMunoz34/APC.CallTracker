@@ -36,9 +36,9 @@ namespace APC.CallTracker.Models
         public bool ForBillingTeam { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime EffectiveDate { get; set; }
+        public DateTime? EffectiveDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime ExpirationDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
     }
 }

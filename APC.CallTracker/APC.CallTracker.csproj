@@ -9,11 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="APC.Core" Version="1.0.4" />
+    <PackageReference Include="DevExpress.Blazor" Version="23.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
-    <PackageReference Include="Serilog" Version="2.11.0" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>

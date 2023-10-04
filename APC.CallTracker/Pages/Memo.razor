@@ -1,11 +1,14 @@
 ﻿@page "/memo"
 @inject MemoService MemoService
+@using APC.CallTracker.Config;
 @using APC.CallTracker.Models
 @using APC.CallTracker.Services
 @using System.Net.Http
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components.Forms
+@using DevExpress.Blazor
 
+@inject IJSRuntime JSRuntime
 @* @inject IHttpClientFactory _clientFactory *@
 <h3>Reason Code Templates</h3>
 
@@ -82,32 +85,23 @@ else
 
         <button type="submit" class="btn btn-primary m-5">Create/Update Memo</button>
     </EditForm>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>CodeID</th>
-                <th>Name</th>
-                <th>Summary</th>
-                <!-- Other columns... -->
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var template in templates)
-            {
-                <tr>
-                    <td>@template.CodeID</td>
-                    <td>@template.Name</td>
-                    <td>@template.Summary</td>
-                    <!-- Other columns... -->
-                    <td>
-                        <button @onclick="() => EditTemplate(template)">Edit</button>
-                        <button @onclick="() => DeleteTemplate(template.CodeID)">Delete</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <DxDataGrid Data="@templates"
+                ShowPager="true" PageSize="10">
+        <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.CodeID)" Caption="CodeID"></DxDataGridColumn>
+        <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.Name)" Caption="Name"></DxDataGridColumn>
+        <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.Summary)" Caption="Summary"></DxDataGridColumn>
+        <!-- Add more columns as needed -->
+        <DxDataGridColumn Caption="Actions">
+            <DisplayTemplate>
+                @{
+                    var template = (NewReasonCodeTemplate)context;
+                }
+                <button @onclick="() => EditTemplate(template)">Edit</button>
+                <button @onclick="() => DeleteTemplate(template.CodeID)">Delete</button>
+            </DisplayTemplate>
+        </DxDataGridColumn>
+    </DxDataGrid>
+
 }
 
 @code {
@@ -163,8 +157,14 @@ else
     private async Task DeleteTemplate(string codeId)
     {
         // Implement delete logic...
-        await MemoService.DeleteTemplateAsync(codeId);
-        templates = await MemoService.GetAllTemplatesAsync();
-        StateHasChanged();
+        //Verify that the user wants to delete the record
+        var confirmResult = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {codeId}?");
+        if(confirmResult)
+		{
+            await MemoService.DeleteTemplateAsync(codeId);
+            templates = await MemoService.GetAllTemplatesAsync();
+            StateHasChanged();
+
+		}
     }
 }
