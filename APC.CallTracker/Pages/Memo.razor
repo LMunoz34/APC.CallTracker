@@ -84,6 +84,7 @@ else
         </div>
 
         <button type="submit" class="btn btn-primary my-5">Create/Update Memo</button>
+        <button type="button" class="btn btn-secondary" @onclick="()=> ClearData()">Clear</button>
 @*         <br /><br />
         <InputText @bind-Value="searchTerm" />
         <DevExpress.Blazor.DxButton Text="Search" Click="@Search"></DevExpress.Blazor.DxButton> *@
@@ -173,6 +174,12 @@ else
         }
 
     }
+
+    private void ClearData()
+	{
+		newMemo = new NewReasonCodeTemplate();
+		Record = null;
+	}
 
     private void EditTemplate(NewReasonCodeTemplate template)
     {
