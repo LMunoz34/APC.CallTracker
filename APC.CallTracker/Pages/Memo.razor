@@ -83,35 +83,31 @@ else
             <InputTextArea id="Template" class="form-control" @bind-Value="newMemo.Template" rows="10"></InputTextArea>
         </div>
 
-        <button type="submit" class="btn btn-primary m-5">Create/Update Memo</button>
+        <button type="submit" class="btn btn-primary my-5">Create/Update Memo</button>
+@*         <br /><br />
+        <InputText @bind-Value="searchTerm" />
+        <DevExpress.Blazor.DxButton Text="Search" Click="@Search"></DevExpress.Blazor.DxButton> *@
     </EditForm>
-<DxDataGrid Data="@templates"
-            ShowPager="true" 
-            PageSize="10"
-            ShowFilterRow="true"
-            ShowHeaderFilter="true">
-    <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.CodeID)" Caption="CodeID" 
-                      SortOrder="DevExpress.Blazor.DataGridColumnSortOrder.Ascending"
-                      AllowFiltering="true"></DxDataGridColumn>
-    <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.Name)" Caption="Name" 
-                      AllowSorting="true" 
-                      AllowFiltering="true"></DxDataGridColumn>
-    <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.Summary)" Caption="Summary"
-                      AllowSorting="true" 
-                      AllowFiltering="true"></DxDataGridColumn>
-    <DxDataGridColumn Caption="Actions">
-        <DisplayTemplate>
-            @{
-                var template = (NewReasonCodeTemplate)context;
-            }
-            <button @onclick="() => EditTemplate(template)">Edit</button>
-            <button @onclick="() => DeleteTemplate(template.CodeID)">Delete</button>
-        </DisplayTemplate>
-    </DxDataGridColumn>
-</DxDataGrid>
+    <DxDataGrid Data="@templates"
+                ShowPager="true"
+                PageSize="100"
+                ShowFilterRow="true">
+        <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.CodeID)" Caption="CodeID"></DxDataGridColumn>
+        <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.Name)" Caption="Name"></DxDataGridColumn>
+        <DxDataGridColumn Field="@nameof(NewReasonCodeTemplate.Summary)" Caption="Summary"></DxDataGridColumn>
+        <DxDataGridColumn Caption="Actions">
+            <DisplayTemplate>
+                @{
+                    var template = (NewReasonCodeTemplate)context;
+                }
+                <button @onclick="() => EditTemplate(template)">Edit</button>
+                <button @onclick="() => DeleteTemplate(template.CodeID)">Delete</button>
+            </DisplayTemplate>
+        </DxDataGridColumn>
+    </DxDataGrid>
 
-<DevExpress.Blazor.DxButton Text="Search" Click="@Search"></DevExpress.Blazor.DxButton>
-<InputText @bind-Value="searchTerm" @bind-Value:event="oninput" />
+
+
 
 }
 
@@ -162,17 +158,20 @@ else
         templates = await MemoService.GetAllTemplatesAsync();
     }
 
-    private void Search()
+    private async Task Search()
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            filteredTemplates = templates;
+            templates = await MemoService.GetAllTemplatesAsync();
+            StateHasChanged();
         }
         else
         {
-            filteredTemplates = templates.Where(t => t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || t.Summary.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+            templates = await MemoService.GetAllTemplatesAsync();
+            templates = templates.Where(t => t.CodeID.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||  t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || t.Summary.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+            StateHasChanged();
         }
-        templates = filteredTemplates;
+
     }
 
     private void EditTemplate(NewReasonCodeTemplate template)
