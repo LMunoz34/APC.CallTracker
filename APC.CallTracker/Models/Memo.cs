@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APC.CallTracker.Models
 {
-    [Table("NewReasonCodeTemplate", Schema = "tracker")]
+    [Table("ReasonCodeTemplate", Schema = "tracker")]
     public class NewReasonCodeTemplate
     {
         [Key]
