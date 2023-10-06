@@ -181,10 +181,11 @@ else
 		Record = null;
 	}
 
-    private void EditTemplate(NewReasonCodeTemplate template)
+    private async Task EditTemplate(NewReasonCodeTemplate template)
     {
         Record = template.CodeID;
         newMemo = template;
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
         // Implement edit logic...
     }
 
